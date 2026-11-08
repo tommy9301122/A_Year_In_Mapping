@@ -4,3 +4,17 @@
 @media(max-width:1000px){.metrics{grid-template-columns:repeat(3,1fr)}.distribution{gap:16px;padding:15px}.donut{width:135px;height:135px}.donut>div{width:92px;height:92px}.donut b{font-size:19px}.split{gap:20px}.legend-row{font-size:10px}}
 @media(max-width:700px){.topbar{padding:20px 16px 15px}.logo{width:35px;height:35px;font-size:16px}.brand{gap:10px}h1{font-size:19px}h1 span{margin-left:2px}.topbar>a:last-child{font-size:11px}nav{padding:9px 12px;gap:0}nav a{padding:7px 10px;font-size:11px}main{padding:0 16px}.snapshot{flex-direction:column;gap:4px}.filters{gap:10px}.filters label{flex:1;min-width:130px}.filters select{min-width:0;max-width:none;width:100%}.filters .search{flex-basis:100%}.filters .check{flex:none;min-width:0}.metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.metric strong{font-size:23px}.split{grid-template-columns:1fr;gap:0}.distribution{gap:25px;padding:20px;min-height:235px}.donut{width:145px;height:145px}.donut>div{width:98px;height:98px}.legend-row{font-size:11px}.cover{width:75px;height:45px}.track{gap:10px;min-width:190px}.panel{margin-bottom:24px}h2{font-size:19px}td,th{padding:8px}.avatar{width:32px;height:32px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+/* Equal initial heights; expanding a ranking never stretches its neighbour. */
+@media(min-width:701px){
+  .split{align-items:start}
+  .split>.panel{display:flex;flex-direction:column}
+  .split .distribution,.split .ranking[data-expanded="false"]{height:var(--collapsed-height,auto)}
+  .split .ranking{display:flex;flex-direction:column;min-height:0}
+  .split .table-wrap{flex:1;display:flex}
+  .split .table-wrap table{height:100%}
+  .split .table-wrap thead{height:33px}
+  .split .empty{flex:1;margin:0}
+}
+.table-actions{display:flex;flex:none;background:#303a3f;border-radius:0 0 3px 3px}
+.table-actions .more{flex:1;width:auto}
+.table-actions .more+.more{border-left:1px solid var(--line)}

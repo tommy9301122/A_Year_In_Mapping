@@ -7,11 +7,47 @@ const flag = c => /^[A-Z]{2}$/.test(c) ? `<img class="flag" src="https://osu.ppy
 const region = new Intl.DisplayNames(['en'], {type:'region'});
 const countryName = c => c === 'Unknown' ? 'Unknown' : `${c} · ${region.of(c) || c}`;
 let controller;
+const collapsedContent = new Map();
+function alignCollapsedPanels() {
+  for (const ids of [['genre', 'language'], ['mappers', 'countries'], ['songs', 'artists']]) {
+    const elements = ids.map($);
+    elements.forEach(el => el.style.removeProperty('--collapsed-height'));
+    if (!matchMedia('(min-width:701px)').matches) continue;
+    // Measure only the initial rows, even if either live table is expanded.
+    const heights = elements.map(el => {
+      const clone = el.cloneNode(false);
+      clone.removeAttribute('id');
+      clone.innerHTML = collapsedContent.get(el.id) ?? el.innerHTML;
+      clone.querySelectorAll('[id]').forEach(node => node.removeAttribute('id'));
+      clone.setAttribute('aria-hidden', 'true');
+      clone.inert = true;
+      Object.assign(clone.style, {position:'absolute', visibility:'hidden', pointerEvents:'none',
+        width:`${el.getBoundingClientRect().width}px`, height:'auto'});
+      el.parentElement.append(clone);
+      const height = clone.getBoundingClientRect().height;
+      clone.remove();
+      return height;
+    });
+    elements.forEach(el => el.style.setProperty('--collapsed-height', `${Math.max(...heights)}px`));
+  }
+}
+window.addEventListener('resize', alignCollapsedPanels);
 function table(id, headers, rows, render, limit=10) {
   let shown = limit;
   function draw() {
-    $(id).innerHTML = rows.length ? `<div class="table-wrap"><table><thead><tr><th>#</th>${headers.map(h => `<th scope="col">${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.slice(0,shown).map((r,i) => `<tr><td>${String(i+1).padStart(2,'0')}</td>${render(r)}</tr>`).join('')}</tbody></table></div>${rows.length>shown ? `<button class="more" type="button">Show more ↓ · ${shown} / ${fmt(rows.length)}</button>`:''}` : '<p class="empty">No data for these filters.</p>';
-    $(id).querySelector('button')?.addEventListener('click', () => {shown += 20; draw();});
+    $(id).classList.add('ranking');
+    $(id).dataset.expanded = String(shown > limit);
+    $(id).innerHTML = rows.length ? `<div class="table-wrap" id="${id}-rows"><table><thead><tr><th>#</th>${headers.map(h => `<th scope="col">${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.slice(0,shown).map((r,i) => `<tr><td>${String(i+1).padStart(2,'0')}</td>${render(r)}</tr>`).join('')}</tbody></table></div>${rows.length>limit ? `<div class="table-actions">${rows.length>shown ? `<button class="more" data-action="more" type="button" aria-controls="${id}-rows" aria-expanded="${shown>limit}">Show more ↓ · ${shown} / ${fmt(rows.length)}</button>`:''}${shown>limit ? `<button class="more" data-action="less" type="button" aria-controls="${id}-rows" aria-expanded="true">Show less ↑</button>`:''}</div>`:''}` : '<p class="empty">No data for these filters.</p>';
+    if (shown === limit) collapsedContent.set(id, $(id).innerHTML);
+    $(id).querySelector('[data-action="more"]')?.addEventListener('click', () => {
+      shown = Math.min(shown + 20, rows.length); draw();
+      $(id).querySelector('[data-action="more"], [data-action="less"]')?.focus({preventScroll:true});
+    });
+    $(id).querySelector('[data-action="less"]')?.addEventListener('click', () => {
+      shown = limit; draw();
+      $(id).querySelector('[data-action="more"]')?.focus({preventScroll:true});
+      $(id).closest('.panel').scrollIntoView({block:'nearest', behavior:'instant'});
+    });
   } draw();
 }
 function chart(id, rows) {
@@ -37,6 +73,7 @@ function render(r) {
   const country=$('country'), value=country.value;
   country.innerHTML='<option value="">All countries</option>'+r.countriesAvailable.map(c=>`<option value="${esc(c)}">${esc(countryName(c))}</option>`).join('');country.value=value;
   $('notice').textContent=o.sets ? (o.unknownNewcomers ? `${o.unknownNewcomers} host(s) with unknown debut status excluded from new mapper counts.`:'') : 'No matching beatmapsets. Adjust the filters or select Reset.';
+  alignCollapsedPanels();
 }
 async function load() {
   controller?.abort(); controller=new AbortController(); const current=controller;

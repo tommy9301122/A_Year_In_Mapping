@@ -76,5 +76,6 @@ npm run build
 
 測試涵蓋資料清理、分頁、日期、限流、新人判定、跨模式去重、收藏／遊玩對帳、GD 口徑、篩選、空結果、同名歌曲及唯讀路由。
 
-2020 年 CSV、示意圖與 notebook 保留為歷史參考，不再作為現行入口。現行入口為 `ayim_2026.ipynb`／`ayim_pipeline.py`。[原始論壇](https://osu.ppy.sh/community/forums/topics/1213530) · [YamYik](https://osu.ppy.sh/users/4470854)
+2020 年 CSV、示意圖與 notebook 保留為歷史參考，不再作為現行入口。現行入口為 `ayim_2026.ipynb`／`ayim_pipeline.py`。[原始論壇](https://osu.ppy.sh/community/forums/topics/1213530) · [YamYA](https://osu.ppy.sh/users/4470854)
+
 
