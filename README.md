@@ -2,7 +2,7 @@
 
 osu! 年度創作回顧網站：一次性擷取、Python 整理、自己的唯讀後端及響應式前端。不需要 Google Sheets、Looker Studio 或資料排程。
 
-[公開網站](https://a-year-in-mapping-2026.classictitan.chatgpt.site)
+[公開網站](https://osu-ayim.com/)
 
 包含總覽、曲風／語言、Mapper／Country、Favourite／Playcount、熱門歌曲／藝人及 GD／Host。支援四模式、Ranked／Loved、主創國家、新主創、文字搜尋、分享篩選網址及展開排行。
 
