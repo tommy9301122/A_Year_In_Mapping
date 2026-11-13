@@ -1,10 +1,9 @@
 # A Year In Mapping 2026
 
-osu! 年度創作回顧網站：一次性擷取、Python 整理、自己的唯讀後端及響應式前端。不需要 Google Sheets、Looker Studio 或資料排程。
+osu! 年度創作回顧網站：一次性擷取、Python 整理、自己的唯讀後端及響應式前端。
 
 [公開網站](https://osu-ayim.com/)
 
-包含總覽、曲風／語言、Mapper／Country、Favourite／Playcount、熱門歌曲／藝人及 GD／Host。支援四模式、Ranked／Loved、主創國家、新主創、文字搜尋、分享篩選網址及展開排行。
 
 ## 本機啟動
 
@@ -15,8 +14,6 @@ python -m pip install -r requirements.txt
 npm run dev
 # http://127.0.0.1:4173
 ```
-
-包含真正取得的 **2026-01-01 至 2026-10-23 預覽快照**：22,217 個難度、6,004 個不重複圖集。網站預設 osu!standard + Ranked，數字隨篩選改變。此快照不是全年數據，10/23 也尚未結束，頁面有明確標記。
 
 ## 年底一次性發佈
 
