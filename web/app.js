@@ -58,7 +58,6 @@ function chart(id, rows) {
 const td = html => `<td>${html}</td>`;
 function render(r) {
   const o=r.overview;
-  $('release').textContent = r.meta.release === 'final' ? '2026 · Full-year snapshot' : '2026 · Preview — partial-year data';
   $('dates').textContent = `${r.meta.start} — ${r.meta.end} · UTC`;
   $('method-date').textContent = `Source: osu! API. Last source response: ${new Date(r.meta.fetchedAt).toISOString().replace('T',' ').slice(0,19)} UTC. ${r.meta.release === 'final' ? 'Full-year snapshot.' : 'Partial-year preview.'} No automatic updates.`;
   $('metrics').innerHTML = [[o.sets,'Beatmapsets'],[o.difficulties,'Beatmaps'],[o.mappers,'Mappers'],[o.newcomers,'New mappers'],[o.favourites,'Favourite count'],[o.plays,'Playcount']].map(([v,l]) => `<div class="metric"><p>${l}</p><strong>${fmt(v)}</strong></div>`).join('');
@@ -72,7 +71,7 @@ function render(r) {
   table('hosts',['Mapper','Beatmapsets','Beatmaps','Playcount'],r.hosts,x=>td(profile(x.id,x.name))+td(fmt(x.count))+td(fmt(x.difficulties))+td(fmt(x.plays)),5);
   const country=$('country'), value=country.value;
   country.innerHTML='<option value="">All countries</option>'+r.countriesAvailable.map(c=>`<option value="${esc(c)}">${esc(countryName(c))}</option>`).join('');country.value=value;
-  $('notice').textContent=o.sets ? (o.unknownNewcomers ? `${o.unknownNewcomers} host(s) with unknown debut status excluded from new mapper counts.`:'') : 'No matching beatmapsets. Adjust the filters or select Reset.';
+  $('notice').textContent = o.sets ? '' : 'No matching beatmapsets. Adjust the filters or select Reset.';
   alignCollapsedPanels();
 }
 async function load() {
